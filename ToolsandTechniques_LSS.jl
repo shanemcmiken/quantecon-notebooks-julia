@@ -8,7 +8,7 @@ gr(fmt=:png);
 
 # Exercise 1
 ϕ_0, ϕ_1, ϕ_2 = 1.1, 0.8, -0.8
- 
+
 A = [1.0 0.0 0.0; ϕ_0 ϕ_1 ϕ_2; 0.0 1.0 0.0]
 C = zeros(3,1)
 G = [0 1 0]
@@ -46,7 +46,7 @@ plot!(xlabel="time", ylabel = "y_t", legend = :none)
 A = [ϕ1 ϕ2 ϕ3 ϕ4; 1.0 0.0 0.0 0.0; 0.0 1.0 0.0 0.0; 0.0 0.0 1.0 0.0]
 C = [σ; 0.0; 0.0; 0.0]
 G = [1.0 0.0 0.0 0.0]
-μ_0 =  ones(4)
+μ_0 = ones(4)
 
 I = 20
 T = 50
@@ -62,3 +62,16 @@ for ii in 1:I
         ensemble_mean .+= y
 end
 ensemble_mean = ensemble_mean./I
+
+plot(ensemble_mean, label = "y_t_bar", linewidth = 2)
+plot!(ys, linewidth = 0.8, alpha = 0.2, label = "", color =:blue)
+
+ymin, ymax = -0.5, 1.15
+m = moment_sequence(ar)
+pop_means = zeros(0)
+for (i, t) ∈ enumerate(m)
+    (μ_x, μ_y, Σ_x, Σ_y) = t
+    push!(pop_means, μ_y[1])
+end
+plot!(pop_means, color = :green, linewidth = 2, label = "G mu_t")
+plot!(ylims=(ymin, ymax), xlabel = "time", ylabel = "y_t", legendfont = font(12))
